@@ -1,0 +1,7 @@
+grave:قبر
+Burial:دفن
+toque:القبعة
+boiled:مغلي
+crate:قفص
+conspiracy:مؤامرة
+betrayal:خيانة

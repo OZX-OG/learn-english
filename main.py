@@ -97,11 +97,12 @@ class MyGUI(QMainWindow):
         self.start_game = True
         self.first = True
         self.t = 0
+        self.indx_word = 0
 
     ############## voice_speach func ##############
     def voice_speach(self):
         self.engine.setProperty('rate', 125)     # setting up new voice rate
-        self.engine.setProperty('volume', 0.1)    # setting up volume level  between 0 and 1
+        self.engine.setProperty('volume', 0.5)    # setting up volume level  between 0 and 1
         voices = self.engine.getProperty('voices')       #getting details of current voice
         self.engine.setProperty('voice', voices[1].id)
         try: self.engine.say( self.words[self.indx_word].split(":")[0].strip().lower() )
@@ -182,7 +183,7 @@ class MyGUI(QMainWindow):
         self.txtbox_word.setStyleSheet("color: rgb(170, 170, 170);")
         self.start_game = True
         self.first = True
-        
+        self.indx_word = 0
 
     ################### mode btns func ###################
     def mode_english(self):

@@ -5,3 +5,7 @@ boiled:مغلي
 crate:قفص
 conspiracy:مؤامرة
 betrayal:خيانة
+seduce:إغواء
+alley:زقاق
+bother:يزعج
+it bothers me:انه يزعجني

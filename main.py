@@ -27,6 +27,10 @@ class MyGUI(QMainWindow):
         self.txtbox_word.hide()
         self.btn_stop.hide()
         self.btn_select_mode.hide()
+        self.btn_hear.hide()
+        self.btn_help.hide()
+        self.lbl_help.hide()
+        
 
         ################### show app ###################
         self.show()
@@ -38,6 +42,8 @@ class MyGUI(QMainWindow):
         self.btn_select_mode.clicked.connect(self.select_mode)
         self.btn_stop.clicked.connect(self.stop)
         self.txtbox_word.returnPressed.connect(self.word)
+        self.btn_help.clicked.connect(self.help)
+        self.btn_hear.clicked.connect(self.hear)
         
         ################### variables ###################
         self.indx_word = 0
@@ -47,7 +53,7 @@ class MyGUI(QMainWindow):
         self.start_game = True
         self.words = ""
         self.first = True
-
+        self.en_ar_index = 0
 
     ############## defualt func ##############
     def default(self):
@@ -62,6 +68,8 @@ class MyGUI(QMainWindow):
         self.lbl_mode.show()
         self.txtbox_word.show()
         self.btn_select_mode.show()
+
+        self.txtbox_word.setFocus()
         
         try: f = open("words.txt", "r", encoding='UTF-8')
         except FileNotFoundError:
@@ -84,14 +92,19 @@ class MyGUI(QMainWindow):
         self.txtbox_word.hide()
         self.btn_stop.hide()
         self.btn_select_mode.hide()
+        self.btn_hear.hide()
+        self.btn_help.hide()
+        self.lbl_help.hide()
 
         self.btn_mode_english.show()
         self.btn_mode_arabic.show()
         self.btn_mode_english_voice.show()
 
+
         self.lbl_title.setText("Select Mode")
         self.lbl_word.setText("Let's get Started")
         self.lbl_lenwords.setText("words : 0 / 0")
+        self.lbl_help.setText("")
         self.txtbox_word.setText("Perss Enter To Start")
         self.txtbox_word.setStyleSheet("color: rgb(170, 170, 170);")
         self.start_game = True
@@ -109,30 +122,33 @@ class MyGUI(QMainWindow):
         except IndexError: pass
         self.engine.runAndWait()
         self.engine.stop()
+        self.btn_hear.show()
 
 
 
     ############## checking func ##############
     def checking(self, _ , mode: str, voice: bool = False):
-        if mode == "arabic": pass
-        elif mode == "english": pass
+        self.txtbox_word.setFocus()
         
-        index = 0 if mode == "arabic" else 1
+        self.en_ar_index = 0 if mode == "arabic" else 1
         if self.first:
-            self.lbl_word.setText( self.words[self.indx_word].split(":")[index].strip().lower()  )
+            self.lbl_word.setText( self.words[self.indx_word].split(":")[self.en_ar_index].strip().lower()  )
             if voice: self.voice_speach()
 
             self.first = False
 
-        if self.txtbox_word.text().lower().strip() == self.words[self.indx_word].split(":")[not index].strip().lower():
+        if self.txtbox_word.text().lower().strip() == self.words[self.indx_word].split(":")[not self.en_ar_index].strip().lower():
             self.txtbox_word.setStyleSheet("color: white")
 
             self.indx_word += 1
-            try: self.lbl_word.setText( self.words[self.indx_word].split(":")[index].strip().lower() )
+            try: self.lbl_word.setText( self.words[self.indx_word].split(":")[self.en_ar_index].strip().lower() )
             except IndexError: pass
             self.txtbox_word.setText("")
+            self.lbl_help.setText("")
         
-            if voice: self.voice_speach()
+            if voice: 
+                self.voice_speach()
+
 
         elif self.start_game:
             self.start_game = False
@@ -144,6 +160,10 @@ class MyGUI(QMainWindow):
         if self.indx_word + 1 > len(self.words):
             self.lbl_lenwords.setText(f"words : 0 / 0")
             self.btn_stop.hide()
+            self.btn_help.hide()
+            self.btn_hear.hide()
+            self.lbl_help.hide()
+            self.lbl_help.setText("")
             self.lbl_word.setText( "You Finished" )
             self.txtbox_word.setText("Perss Enter To Start Again")
             self.txtbox_word.setStyleSheet("color: rgb(170, 170, 170);")
@@ -158,8 +178,9 @@ class MyGUI(QMainWindow):
     def word(self):
         ### variables
         self.btn_stop.show()
+        self.btn_help.show()
+        self.lbl_help.show()
         
-        self.txtbox_word.setFocus()
         
         if self.b_mode_arabic:
             self.checking(self, "arabic")
@@ -179,6 +200,7 @@ class MyGUI(QMainWindow):
 
         self.lbl_word.setText("Let's get Started")
         self.lbl_lenwords.setText("words : 0 / 0")
+        self.lbl_help.setText("")
         self.txtbox_word.setText("Perss Enter To Start")
         self.txtbox_word.setStyleSheet("color: rgb(170, 170, 170);")
         self.start_game = True
@@ -210,6 +232,14 @@ class MyGUI(QMainWindow):
         self.txtbox_word.setFocus()
         self.default()
         
+    ############## btn_help func ##############
+    def help(self):
+        self.lbl_help.setText( self.words[self.indx_word].split(":")[not self.en_ar_index].strip().lower() )
+
+    ############## btn_hear func ##############
+    def hear(self):
+        self.voice_speach()
+        self.txtbox_word.setFocus()
 
 app = QApplication([])
 window = MyGUI()

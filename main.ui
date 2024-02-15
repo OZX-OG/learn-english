@@ -1014,6 +1014,73 @@ QStatusBar QLineEdit, QStatusBar QLineEdit:focus {
      <string>English With Voice</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_hear">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>140</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>-1</pointsize>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255)</string>
+    </property>
+    <property name="text">
+     <string>Bro listen</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_help">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>140</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>-1</pointsize>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255)</string>
+    </property>
+    <property name="text">
+     <string>Help</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_help">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>110</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255)</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
    <zorder>lbl_title</zorder>
    <zorder>lbl_lenwords</zorder>
    <zorder>btn_stop</zorder>
@@ -1024,6 +1091,9 @@ QStatusBar QLineEdit, QStatusBar QLineEdit:focus {
    <zorder>btn_mode_arabic</zorder>
    <zorder>btn_mode_english_voice</zorder>
    <zorder>btn_mode_english</zorder>
+   <zorder>btn_hear</zorder>
+   <zorder>lbl_help</zorder>
+   <zorder>btn_help</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

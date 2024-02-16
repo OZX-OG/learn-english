@@ -861,7 +861,7 @@ QStatusBar QLineEdit, QStatusBar QLineEdit:focus {
    <widget class="QPushButton" name="btn_stop">
     <property name="geometry">
      <rect>
-      <x>260</x>
+      <x>200</x>
       <y>250</y>
       <width>131</width>
       <height>31</height>
@@ -1081,6 +1081,29 @@ QStatusBar QLineEdit, QStatusBar QLineEdit:focus {
      <string/>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_next">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>250</y>
+      <width>131</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>-1</pointsize>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255)</string>
+    </property>
+    <property name="text">
+     <string>NEXT</string>
+    </property>
+   </widget>
    <zorder>lbl_title</zorder>
    <zorder>lbl_lenwords</zorder>
    <zorder>btn_stop</zorder>
@@ -1094,6 +1117,7 @@ QStatusBar QLineEdit, QStatusBar QLineEdit:focus {
    <zorder>btn_hear</zorder>
    <zorder>lbl_help</zorder>
    <zorder>btn_help</zorder>
+   <zorder>btn_next</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

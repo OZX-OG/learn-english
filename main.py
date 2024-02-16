@@ -2,12 +2,13 @@ from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from time import sleep
 from os import system
-import pyttsx3
+from pyttsx3 import init
+from threading import Thread
 
 class MyGUI(QMainWindow):
     def __init__(self):
         super(MyGUI, self).__init__()
-        self.engine = pyttsx3.init() # object creation
+        self.engine = init() # object creation
 
         try: uic.loadUi("main.ui", self); system("cls")
         except FileNotFoundError: 
@@ -26,6 +27,7 @@ class MyGUI(QMainWindow):
         self.lbl_mode.hide()
         self.txtbox_word.hide()
         self.btn_stop.hide()
+        self.btn_next.hide()
         self.btn_select_mode.hide()
         self.btn_hear.hide()
         self.btn_help.hide()
@@ -41,6 +43,7 @@ class MyGUI(QMainWindow):
         self.btn_mode_english_voice.clicked.connect(self.mode_english_voice)
         self.btn_select_mode.clicked.connect(self.select_mode)
         self.btn_stop.clicked.connect(self.stop)
+        self.btn_next.clicked.connect(self.next)
         self.txtbox_word.returnPressed.connect(self.word)
         self.btn_help.clicked.connect(self.help)
         self.btn_hear.clicked.connect(self.hear)
@@ -91,6 +94,7 @@ class MyGUI(QMainWindow):
         self.lbl_mode.hide()
         self.txtbox_word.hide()
         self.btn_stop.hide()
+        self.btn_next.hide()
         self.btn_select_mode.hide()
         self.btn_hear.hide()
         self.btn_help.hide()
@@ -114,15 +118,16 @@ class MyGUI(QMainWindow):
 
     ############## voice_speach func ##############
     def voice_speach(self):
+        self.btn_hear.show()
         self.engine.setProperty('rate', 125)     # setting up new voice rate
         self.engine.setProperty('volume', 0.5)    # setting up volume level  between 0 and 1
         voices = self.engine.getProperty('voices')       #getting details of current voice
         self.engine.setProperty('voice', voices[1].id)
         try: self.engine.say( self.words[self.indx_word].split(":")[0].strip().lower() )
         except IndexError: pass
-        self.engine.runAndWait()
+        try: self.engine.runAndWait()
+        except RuntimeError: system("cls") 
         self.engine.stop()
-        self.btn_hear.show()
 
 
 
@@ -133,7 +138,8 @@ class MyGUI(QMainWindow):
         self.en_ar_index = 0 if mode == "arabic" else 1
         if self.first:
             self.lbl_word.setText( self.words[self.indx_word].split(":")[self.en_ar_index].strip().lower()  )
-            if voice: self.voice_speach()
+            if voice: 
+                Thread(target=self.voice_speach, name="voice speach", daemon=True ).start()
 
             self.first = False
 
@@ -147,7 +153,7 @@ class MyGUI(QMainWindow):
             self.lbl_help.setText("")
         
             if voice: 
-                self.voice_speach()
+                Thread(target=self.voice_speach, name="voice speach", daemon=True ).start()
 
 
         elif self.start_game:
@@ -160,6 +166,7 @@ class MyGUI(QMainWindow):
         if self.indx_word + 1 > len(self.words):
             self.lbl_lenwords.setText(f"words : 0 / 0")
             self.btn_stop.hide()
+            self.btn_next.hide()
             self.btn_help.hide()
             self.btn_hear.hide()
             self.lbl_help.hide()
@@ -178,6 +185,7 @@ class MyGUI(QMainWindow):
     def word(self):
         ### variables
         self.btn_stop.show()
+        self.btn_next.show()
         self.btn_help.show()
         self.lbl_help.show()
         
@@ -197,6 +205,10 @@ class MyGUI(QMainWindow):
     ############## stop_btn func ##############
     def stop(self):
         self.btn_stop.hide()
+        self.btn_next.hide()
+        self.btn_help.hide()
+        self.btn_hear.hide()
+        self.lbl_help.hide()  
 
         self.lbl_word.setText("Let's get Started")
         self.lbl_lenwords.setText("words : 0 / 0")
@@ -234,12 +246,28 @@ class MyGUI(QMainWindow):
         
     ############## btn_help func ##############
     def help(self):
-        self.lbl_help.setText( self.words[self.indx_word].split(":")[not self.en_ar_index].strip().lower() )
+        try: self.lbl_help.setText( self.words[self.indx_word].split(":")[not self.en_ar_index].strip().lower() )
+        except IndexError: pass
 
     ############## btn_hear func ##############
     def hear(self):
-        self.voice_speach()
+        Thread(target=self.voice_speach, name="voice speach", daemon=True ).start()
         self.txtbox_word.setFocus()
+   
+    ############## btn_next func ##############
+    def next(self):
+        self.txtbox_word.setStyleSheet("color: white")
+
+        if self.indx_word < len(self.words)-1:
+            self.indx_word += 1
+
+        try: self.lbl_word.setText( self.words[self.indx_word].split(":")[self.en_ar_index].strip().lower() )
+        except IndexError: pass
+        self.txtbox_word.setText("")
+        self.lbl_help.setText("")
+    
+        self.txtbox_word.setFocus()
+        self.lbl_lenwords.setText(f"words : {self.indx_word + 1} / { str(len(self.words)) } ")
 
 app = QApplication([])
 window = MyGUI()
